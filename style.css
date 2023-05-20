@@ -71,8 +71,9 @@ h2{
     display: none;
 }
 
-.address-error, .error-address{
+.error{
+    margin-top: 15px;
     color: #fff;
-    margin-top: 10px;
+    text-shadow: 0 0 rgba(0,0,0,.3);
     font-size: 17px;
 }
