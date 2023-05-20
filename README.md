@@ -14,5 +14,6 @@ Task: Retrieve Timezone Information using Geographical Coordinates and Address
 ### Error handling
 <img width="307" alt="Screenshot 2023-05-20 155149" src="https://github.com/Ajay-Chaudhari01001/F3_Second_Contest/assets/55138445/4966cf05-1845-4dd6-9671-ea1e983ee759">
 
-### Show all data your current position and enter by city name<img width="302" alt="Screenshot 2023-05-20 155316" src="https://github.com/Ajay-Chaudhari01001/F3_Second_Contest/assets/55138445/dbd55a6a-2d36-4810-92f0-c4ce01316aa4">
+### Show all data your current position and enter by city name
+<img width="302" alt="Screenshot 2023-05-20 155316" src="https://github.com/Ajay-Chaudhari01001/F3_Second_Contest/assets/55138445/dbd55a6a-2d36-4810-92f0-c4ce01316aa4">
 <img width="302" alt="Screenshot 2023-05-20 155316" src="https://github.com/Ajay-Chaudhari01001/F3_Second_Contest/assets/55138445/368d745d-9de7-4178-a5af-5a6bacd32eed">
