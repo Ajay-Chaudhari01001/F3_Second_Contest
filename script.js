@@ -1,7 +1,8 @@
+// getting refrences of all html elements...
 const userCont1 = document.querySelector(".user-time-info");
 const userCont2 = document.querySelector(".user-address-info");
+const resultBox = document.querySelector(".user-by-address");
 const error = document.querySelector(".error");
-const errorAddress = document.querySelector(".error-address");
 
 // IIIF function it's automatically called
 (function getCurrentTimezone() {
@@ -20,10 +21,10 @@ function showCurrentTimezone(currentPosition) {
     const url = `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&format=json&apiKey=23cc2c6ecec44c51bf1c77ab6ba17bec`;
 
     fetch(url)
-    .then(response => response.json())
-    .then(res =>{
+        .then(response => response.json())
+        .then(res => {
 
-        let html = `
+            let html = `
                 <p class="time-zone">Name of Time Zone: ${res.results[0].timezone.name}</p>
                 <div>
                     <p class="latitude">Lat: ${res.results[0].lat}</p>
@@ -37,44 +38,51 @@ function showCurrentTimezone(currentPosition) {
                 <p class="city">City: ${res.results[0].city}</p>
         `;
 
-        userCont1.innerHTML = html;
+            userCont1.innerHTML = html;
 
-    }) 
-    .catch(err => console.error(err));
+        })
+        .catch(err => resultBox.style.display = err);
 }
 
 
 function fetchDetailsByAdress() {
     let address = document.querySelector("#address").value;
 
-    if(address.trim() === ""){
-        document.querySelector(".address-error").innerHTML = "Pleaser Enter City name";
-        const resultBox = document.querySelector(".user-by-address");
-           resultBox.style.display = 'none';
+    // Address validation here..
+    if (address.trim() === "") {
+        error.innerHTML = "Please Enter City name";
+        resultBox.style.display = 'none';
+        document.querySelector("#address").value = "";
+        return;
+    }
+    if (!validateAddress(address)) {
+        error.innerHTML = "Please Enter a valid Address";
+        resultBox.style.display = 'none';
+        document.querySelector("#address").value = "";
+        return;
     }
 
     // Convert address to coordinates using geocoding API
-  const geocodingUrl = `https://api.geoapify.com/v1/geocode/search?text=${address}&apiKey=23cc2c6ecec44c51bf1c77ab6ba17bec`;
+    const geocodingUrl = `https://api.geoapify.com/v1/geocode/search?text=${address}&apiKey=23cc2c6ecec44c51bf1c77ab6ba17bec`;
 
-  fetch(geocodingUrl)
-  .then(response => response.json())
-  .then(res =>{
-
-        const latitude = res.features[0].properties.lat;
-        const longitude = res.features[0].properties.lon;
-        console.log(latitude, longitude)
-        const timezoneUrl = `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&format=json&apiKey=23cc2c6ecec44c51bf1c77ab6ba17bec`;
-
-        fetch(timezoneUrl)
+    fetch(geocodingUrl)
         .then(response => response.json())
         .then(res => {
 
-           const resultBox = document.querySelector(".user-by-address");
-           resultBox.style.display = 'block';
-           document.querySelector(".address-error").innerHTML = "";
-           errorAddress.innerHTML = ""
+            const latitude = res.features[0].properties.lat;
+            const longitude = res.features[0].properties.lon;
             
-        let html = `
+            const timezoneUrl = `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&format=json&apiKey=23cc2c6ecec44c51bf1c77ab6ba17bec`;
+
+            fetch(timezoneUrl)
+                .then(response => response.json())
+                .then(res => {
+
+                    resultBox.style.display = 'block';
+                    error.innerHTML = "";
+                    document.querySelector("#address").value = "";
+
+                    let html = `
                     <p class="time-zone">Name of Time Zone: ${res.results[0].timezone.name}</p>
                     <div>
                         <p class="latitude">Lat: ${res.results[0].lat}</p>
@@ -88,19 +96,31 @@ function fetchDetailsByAdress() {
                     <p class="city">City: ${res.results[0].city}</p>
                 `;
 
-        userCont2.innerHTML = html;
+                    userCont2.innerHTML = html;
 
+                })
+                .catch(() => {
+                    // Display the error message for timezone retrieval
+                    error.textContent = 'Error retrieving timezone.';
+                    resultBox.style.display = 'none';
+                    document.querySelector("#address").value = "";
+                });
         })
-        .catch(error => {
-            // Display the error message for timezone retrieval
-            document.querySelector('.errorAddress').textContent = 'Error retrieving timezone.';     
-          });
-  })
-  .catch(() => {
-    resultBox.style.display = 'none';
-    errorAddress.innerHTML = `An error occurred while geocoding the address: Please Enter Valid City`;
-  });
-
+        .catch(() => {
+            resultBox.style.display = 'none';
+            error.innerHTML = `An error occurred while geocoding the address: Please Enter Valid City`;
+            document.querySelector("#address").value = "";
+        });
 }
 
-document.querySelector('#btn').addEventListener('click', fetchDetailsByAdress);
+function validateAddress(address) {
+    var addressPattern = /^[a-zA-Z0-9\s\.,#'-]+$/;
+    if (addressPattern.test(address)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+document.querySelector('#btn')
+.addEventListener('click', fetchDetailsByAdress);
