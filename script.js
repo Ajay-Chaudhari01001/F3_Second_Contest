@@ -4,7 +4,7 @@ const userCont2 = document.querySelector(".user-address-info");
 const resultBox = document.querySelector(".user-by-address");
 const error = document.querySelector(".error");
 
-// IIIF function it's automatically called
+// IIFE function it's automatically called
 (function getCurrentTimezone() {
     if (navigator.geolocation) {
         // pass by as a callback function...
