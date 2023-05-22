@@ -113,6 +113,7 @@ function fetchDetailsByAdress() {
         });
 }
 
+// validate Address Function....
 function validateAddress(address) {
     var addressPattern = /^[a-zA-Z0-9\s\.,#'-]+$/;
     if (addressPattern.test(address)) {
