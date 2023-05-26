@@ -1,5 +1,5 @@
 # F3_Second_Contest
-Task: Retrieve Timezone Information using Geographical Coordinates and Address
+Retrieve Timezone Information using Geographical Coordinates and Address
 
 ## Live link 
 [Click here](https://ajay-chaudhari01001.github.io/F3_Second_Contest/)
